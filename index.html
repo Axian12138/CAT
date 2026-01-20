@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Collision-Free Humanoid Traversal in Cluttered Indoor Scenes">
+  <meta name="keywords" content="Robotics, Humanoid, Whole-body Control, Collision Avoidance, Perceptive Locomotion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    Collision-Free Humanoid Traversal in Cluttered Indoor Scenes
+  </title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ38WT2YPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ38WT2YPD');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://kit.fontawesome.com/19914a84eb.js" crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<section class="hero is-link is-fullheight video" style="overflow: hidden; position:relative;">
+  <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%;min-height: 56.25vw;">
+    <video playsinline autoplay muted loop>
+      <source src=" ./static/videos/demo.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-video is-hidden-tablet is-inline-block-mobile"
+    style="height: 154.28571428vw; width: 100%; min-width:64.81481481vh;min-height:100%;">
+    <video playsinline autoplay muted loop>
+      <source src=" ./static/videos/demo.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay"></div>
+  <!-- Hero head: will stick at the top -->
+  <div class="hero-head is-hidden-mobile">
+    <header class="navbar">
+      <div class="container is-size-5">
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <!-- <a class="navbar-item pl-4 pr-4" href="https://www.arxiv.org/pdf/2505.10918"> -->
+            <a href="https://github.com/Axian12138/CAT/static/_RAL_click-and-traverse.pdf" class="navbar-item  pl-4 pr-4">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+            <a class="navbar-item  pl-4 pr-4" href="https://github.com/Axian12138/CAT">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span> </a>
+            <a href="https://github.com/Axian12138/CAT" class="navbar-item  pl-4 pr-4">
+              <span class="icon" style="margin-right:5px;">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span> </a>
+            <span class="navbar-item  pl-4 pr-4">
+              <a href="https://github.com/Axian12138/Click-and-Traverse" class="button is-inverted is-large">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 12rem;">
+        CAT
+      </h1>
+      <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 4rem;">
+        Collision-Free Humanoid Traversal in Cluttered Indoor Scenes
+      </h1>
+      <!-- <h1 class="is-2 is-italic is-size-4-mobile" style="font-size: 2rem; opacity: 80%;">
+        Conference on Robot Learning 2024
+      </h1>
+      <h1 class="is-2 is-italic is-size-4-mobile" style="font-size: 1.5rem; opacity: 80%;">
+        <b>Spotlight</b> WCBM Workshop CoRL 2024
+      </h1>
+      <h1 class="is-2 is-italic is-size-4-mobile" style="font-size: 1.5rem; opacity: 80%;">
+        X-Embodiment Workshop CoRL 2024
+      </h1> -->
+
+      <div class="column has-text-centered is-hidden-tablet">
+        <div class="publication-links">
+          <!-- PDF Link. -->
+          <span class="link-block">
+            <a href="https://axian12138.github.io/CAT/" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://axian12138.github.io/CAT/" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+          <!-- Video Link. -->
+          <span class="link-block">
+            <a href="https://axian12138.github.io/CAT/" class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span>
+            </a>
+          </span>
+          <!-- Code Link. -->
+          <span class="link-block">
+            <a href="https://axian12138.github.io/CAT/"
+              class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                <i class="fab fa-github"></i>
+              </span>
+              <span>Code</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <div class="hero-foot is-hidden-mobile">
+    <nav class="tabs is-boxed is-fullwidth is-size-5">
+      <ul>
+        <!-- <li><a href="#umi">Robot Data without Robots</a></li>
+        <li><a href="#task-tracking">Task Tracking without Simulating Tasks</a></li>
+        <li><a href="#wbc">Whole-body Controller</a></li>
+        <li><a href="#hardware">Hardware & System</a></li>
+        <li><a href="#qa">Q & A</a></li> -->
+      </ul>
+    </nav>
+  </div>
+</section>
+
+
+<section class="section"  style="margin-top: 2rem; margin-bottom: 0rem;">
+  <div class="container has-text-centered" style="margin: 0.1rem auto; max-width: 900px; font-size: 0.95rem; line-height: 1.6; margin-bottom: 0rem;">
+  <!-- <div class="container has-text-centered" style="padding-left: 1000vw; padding-right: 1000vw;"></div> -->
+    <h1 class="title is-2">Click and Traverse: Collision-Free Humanoid Traversal in Cluttered Indoor Scenes</h1>
+    <p class="is-size-5">
+      <a href="https://axian12138.github.io/">Han Xue</a><sup>1,3*</sup>, Sikai Liang<sup>2,3*</sup>, <a href="https://zzk273.github.io/">Zhikai Zhang</a><sup>1,3*</sup>,  
+      <a href="https://zczeng.com/">Zicheng Zeng</a><sup>3,5</sup>, <a href="https://leolyliu.github.io//">Yun Liu</a><sup>1,3</sup>, <a href="https://github.com/Liam-lyr">Yunrui Lian</a><sup>1,3</sup>, <a href="https://42jaylonw.github.io/">Jilong Wang</a><sup>3,6</sup>, 
+      <a href="https://scholar.google.com/citations?user=wRBbtl8AAAAJ&hl=en">Xuesong Shi</a><sup>3</sup>, <a href="https://ericyi.github.io/">Li Yi</a><sup>1,4</sup>
+    </p>
+    <p class="is-size-6">
+      <sup>1</sup>Tsinghua University, <sup>2</sup>Tongji University, <sup>3</sup>Galbot, 
+      <sup>4</sup>Shanghai Qi Zhi Institute, 
+      <sup>5</sup>South China University of Technology, <sup>6</sup>Peking University
+    </p>
+  </div>
+<!-- 
+  <div class="column has-text-centered">
+    <div class="publication-links">
+      <span class="link-block">
+        <a href="paper.pdf"
+          class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+            <i class="fas fa-file-pdf"></i>
+          </span>
+          <span>Paper</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a href="https://arxiv.org/abs/XXXX.XXXXX"
+          class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+            <i class="fas fa-book"></i>
+          </span>
+          <span>arXiv</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a href="https://youtu.be/OG3b46-TLVQ"
+            class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+              <i class="fab fa-youtube"></i>
+          </span>
+          <span>YouTube</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a href="https://www.bilibili.com/video/BV1aNr6BiEnL" class="external-link button is-normal is-rounded is-dark" target="_blank">
+          <span class="icon">
+            <svg style="color: white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path d="M488.6 104.1C505.3 122.2 513 143.8 511.9 169.8V372.2C511.5 398.6 502.7 420.3 485.4 437.3C468.2 454.3 446.3 463.2 419.9 464H92.02C65.57 463.2 43.81 454.2 26.74 436.8C9.682 419.4 .7667 396.5 0 368.2V169.8C.7667 143.8 9.682 122.2 26.74 104.1C43.81 87.75 65.57 78.77 92.02 78H121.4L96.05 52.19C90.3 46.46 87.42 39.19 87.42 30.4C87.42 21.6 90.3 14.34 96.05 8.603C101.8 2.868 109.1 0 117.9 0C126.7 0 134 2.868 139.8 8.603L213.1 78H301.1L375.6 8.603C381.7 2.868 389.2 0 398 0C406.8 0 414.1 2.868 419.9 8.603C425.6 14.34 428.5 21.6 428.5 30.4C428.5 39.19 425.6 46.46 419.9 52.19L394.6 78L423.9 78C450.3 78.77 471.9 87.75 488.6 104.1H488.6zM449.8 173.8C449.4 164.2 446.1 156.4 439.1 150.3C433.9 144.2 425.1 140.9 416.4 140.5H96.05C86.46 140.9 78.6 144.2 72.47 150.3C66.33 156.4 63.07 164.2 62.69 173.8V368.2C62.69 377.4 65.95 385.2 72.47 391.7C78.99 398.2 86.85 401.5 96.05 401.5H416.4C425.6 401.5 433.4 398.2 439.7 391.7C446 385.2 449.4 377.4 449.8 368.2L449.8 173.8zM185.5 216.5C191.8 222.8 195.2 230.6 195.6 239.7V273C195.2 282.2 191.9 289.9 185.8 296.2C179.6 302.5 171.8 305.7 162.2 305.7C152.6 305.7 144.7 302.5 138.6 296.2C132.5 289.9 129.2 282.2 128.8 273V239.7C129.2 230.6 132.6 222.8 138.9 216.5C145.2 210.2 152.1 206.9 162.2 206.5C171.4 206.9 179.2 210.2 185.5 216.5H185.5zM377 216.5C383.3 222.8 386.7 230.6 387.1 239.7V273C386.7 282.2 383.4 289.9 377.3 296.2C371.2 302.5 363.3 305.7 353.7 305.7C344.1 305.7 336.3 302.5 330.1 296.2C323.1 289.9 320.7 282.2 320.4 273V239.7C320.7 230.6 324.1 222.8 330.4 216.5C336.7 210.2 344.5 206.9 353.7 206.5C362.9 206.9 370.7 210.2 377 216.5H377z" fill="white"></path>
+            </svg>
+          </span>
+          <span>Bilibili</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a href="https://twitter.com/project_instinct" class="external-link button is-normal is-rounded is-dark" target="_blank">
+          <span class="icon">
+            <i class="fab fa-twitter"></i>
+          </span>
+          <span>Twitter</span>
+        </a>
+      </span>
+      <span class="link-block">
+        <a href="https://github.com/project-instinct/instinctlab"
+            class="external-link button is-normal is-rounded is-dark">
+          <span class="icon">
+              <i class="fab fa-github"></i>
+          </span>
+          <span>Click-and-Traverse</span>
+          </a>
+      </span>
+    </div>
+  </div> -->
+</section>
+
+<section class="section" id="video" style="margin-top: 0rem;">
+  <div class="container is-max-desktop" style="margin-top: 0rem;">
+    <h2 class="title is-1 has-text-centered is-size-4-mobile"></h2>
+    <div style="position: relative; width: 100%; padding-top: 56.25%; border-radius: 1rem; overflow: hidden;">
+      <video controls autoplay muted loop playsinline
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+        <source src="./static/videos/demo.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p class="is-size-6">
+            We study the problem of collision-free humanoid traversal in cluttered indoor scenes, such as hurdling over objects scattered on the floor, crouching under low-hanging obstacles, or squeezing through narrow passages. To achieve this goal, the humanoid needs to map its perception of surrounding obstacles to the corresponding traversal skills. 
+            However, due to the reward engineering bottleneck, perception–control gap and sim-to-real transfer challenge, directly learning such mappings is highly challenging. Therefore, we introduce Humanoid Potential Field (<strong>HumanoidPF</strong>), a unified representation that tightly bridges environmental perception with whole-body control. It induces dense, structured guidance to streamline reward engineering and provides compact, task-relevant and sim-to-real-robust perceptual observations. 
+            To enable the HumanoidPF to learn generalizable traversal skills through diverse and highly challenging cluttered indoor scenes, we further propose a hybrid scene generation method, incorporating crops of realistic 3D indoor scenes and procedurally synthesized obstacles. We successfully transfer our policy to the real world and develop a teleoperation system that allows a user to command the humanoid to traverse in cluttered indoor scenes with just a single click. Extensive experiments are conducted in both simulation and the real world to validate the effectiveness of our method.          </p>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- 
+<section class="section" id="video">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-4-mobile">Technical Summary Video</h2>
+    <iframe width="100%" style="aspect-ratio: 16 / 9;" src="
+      https://www.youtube.com/embed/TODO" title="R2S2 Technical Summary Video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</section> -->
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Real-world Traversal</h2>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <figure style="text-align: center; margin-bottom: 1rem;">
+        <figcaption style="font-size: 1.5rem; font-weight: bold;">Real-world cluttered indoor scenes</figcaption>
+      </figure>
+      <div class="video-grid" style="display: flex; overflow-x: auto; gap: 2rem; padding-bottom: 1rem;">
+        
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/real/detour.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle">detour through narrow passage</h2>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/real/bendceil.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle">crouch under the table</h2>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/real/corner.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle">avoid the cat and holiday ribbon</h2>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/real/hurdle.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle">hurdle over the cat</h2>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/real/ceilbar.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle">crouch and hurdle</h2>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/real/dyceil.mp4" type="video/mp4">
+          </video>
+          <h2 class="subtitle">crouch under moving obstacle</h2>
+        </div>
+      </div>
+
+      <figure style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+        <figcaption style="font-size: 1.5rem; font-weight: bold;">Simulator results (test set)</figcaption>
+      </figure>
+      <div class="video-grid" style="display: flex; overflow-x: auto; gap: 2rem; padding-bottom: 1rem;">
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-01.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-02.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-03.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-04.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-05.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-06.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-07.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-08.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-09.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-10.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-11.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-34.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <figure style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+        <figcaption style="font-size: 1.5rem; font-weight: bold;">Simulator results (training set)</figcaption>
+      </figure>
+      <div class="video-grid" style="display: flex; overflow-x: auto; gap: 2rem; padding-bottom: 1rem;">
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-23.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-25.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <!-- <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-16.mp4" type="video/mp4">
+          </video>
+        </div> -->
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-27.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-20.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-22.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-24.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-26.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-28.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-30.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-32.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <div class="video-item" style="flex: 0 0 45%; text-align: center;">
+          <video controls muted loop playsinline style="width: 100%; border-radius: 1rem;">
+            <source src="./static/videos/sim/webm2mp4-33.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<br>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/pipeline8.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+    </div>
+  </div>
+</section>
+
+<div class="pipeline-description"
+     style="margin: 0.1rem auto; max-width: 900px; font-size: 0.95rem; line-height: 1.6;">
+  <p>
+    <strong>Overall pipeline.</strong>
+    We learn a visuomotor policy that maps diverse obstacle geometries and spatial layouts to corresponding traversal skills.
+    <strong>Left:</strong> training of specialist policies using the proposed HumanoidPF;
+    <em>(Top)</em> construction of the HumanoidPF for humanoid whole-body control;
+    <em>(Bottom)</em> its use in guiding humanoid traversal skill learning through field-based rewards and observations.
+    <strong>Right:</strong> generalization and deployment pipeline.
+    <em>(Top)</em> hybrid obstacle generation for constructing diverse training environments;
+    <em>(Middle)</em> parallel training of multiple specialists across varied obstacle configurations and difficulty levels;
+    <em>(Bottom)</em> the final Click-and-Traverse deployment, where the learned generalist policy enables intuitive loco-navigation teleoperation through real-time localization and mapping.
+  </p>
+</div>
+
+
+<section class="section is-small">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 is-size-4-mobile">BibTeX</h2>
+    <pre class="is-hidden-mobile">
+      <code>
+@misc{,
+  title={Collision-Free Humanoid Traversal in Cluttered Indoor Scenes}, 
+  author={Han Xue and Sikai Liang and Zhikai Zhang and Zicheng Zeng and Yun Liu and Yunrui Lian and Jilong Wang and Xuesong Shi and Li Yi},
+  year={2026},
+}
+      </code></pre>
+  </div>
+</section>
+
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Website template borrowed from <a href="https://nerfies.github.io/">NeRFies</a> and <a href="https://umi-on-legs.github.io/">UMI on Legs</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
