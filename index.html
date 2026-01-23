@@ -503,7 +503,7 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <img src="./static/images/pipeline8.png"
+      <img src="./static/images/pipeline.png"
                  class="interpolation-image"
                  alt="Interpolate start reference image."/>
     </div>
@@ -514,14 +514,14 @@
      style="margin: 0.1rem auto; max-width: 900px; font-size: 0.95rem; line-height: 1.6;">
   <p>
     <strong>Overall pipeline.</strong>
-    We learn a visuomotor policy that maps diverse obstacle geometries and spatial layouts to corresponding traversal skills.
-    <strong>Left:</strong> training of specialist policies using the proposed HumanoidPF;
-    <em>(Top)</em> construction of the HumanoidPF for humanoid whole-body control;
-    <em>(Bottom)</em> its use in guiding humanoid traversal skill learning through field-based rewards and observations.
-    <strong>Right:</strong> generalization and deployment pipeline.
-    <em>(Top)</em> hybrid obstacle generation for constructing diverse training environments;
-    <em>(Middle)</em> parallel training of multiple specialists across varied obstacle configurations and difficulty levels;
-    <em>(Bottom)</em> the final Click-and-Traverse deployment, where the learned generalist policy enables intuitive loco-navigation teleoperation through real-time localization and mapping.
+    We learn a visuomotor policy that maps diverse obstacle geometries and spatial layouts to corresponding whole-body traversal skills. 
+    <strong>Left:</strong> HumanoidPF for whole-body traversal learning.
+    <em>(Top)</em> Construction of HumanoidPF, a reformulation of APF tailored for humanoid whole-body traversal; 
+    <em>(Bottom)</em> its use as informative perceptual representation and collision-avoidance rewards.
+    <strong>Right:</strong> Scalable training and deployment pipeline.
+    <em>(Top)</em> Hybrid scene generation for constructing diverse and challenging training environments; 
+    <em>(Middle)</em> parallel training of multiple specialist policies followed by distillation into a single generalist policy;
+    <em>(Bottom)</em> sim-to-real deployment via Click-and-Traverse, an intuitive loco-navigation teleoperation in cluttered indoor scenes.
   </p>
 </div>
 
@@ -531,10 +531,14 @@
     <h2 class="title is-3 is-size-4-mobile">BibTeX</h2>
     <pre class="is-hidden-mobile">
       <code>
-@misc{,
-  title={Collision-Free Humanoid Traversal in Cluttered Indoor Scenes}, 
-  author={Han Xue and Sikai Liang and Zhikai Zhang and Zicheng Zeng and Yun Liu and Yunrui Lian and Jilong Wang and Xuesong Shi and Li Yi},
-  year={2026},
+@misc{xue2026collisionfreehumanoidtraversalcluttered,
+      title={Collision-Free Humanoid Traversal in Cluttered Indoor Scenes}, 
+      author={Han Xue and Sikai Liang and Zhikai Zhang and Zicheng Zeng and Yun Liu and Yunrui Lian and Jilong Wang and Qingtao Liu and Xuesong Shi and Li Yi},
+      year={2026},
+      eprint={2601.16035},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2601.16035}, 
 }
       </code></pre>
   </div>
